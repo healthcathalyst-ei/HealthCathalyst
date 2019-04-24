@@ -1,0 +1,43 @@
+﻿@using Persons.Models;
+@using System.Globalization;
+
+@model IEnumerable<Person>
+@{
+    ViewBag.Title = "Persons";
+}
+
+<h2>Social Page</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>Address</th>
+            <th>Interests</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (item.Photo != null) {
+                    <img class="photo-index-img" src='@Url.Action( "GetImage", "Photo", new { id = item.PersonID } )' />
+                }
+            </td>
+            <td>@item.PersonNames</td>
+
+            <td>
+                @Html.DisplayFor(model => item.DOB)
+            </td>
+            <td>
+                @item.Address
+            </td>
+            <td>
+                @item.Interests
+            </td>
+        </tr>
+        }
+        </tbody>
+</table>

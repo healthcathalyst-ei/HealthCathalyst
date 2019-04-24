@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="well">
+    Name: <input type="search" id="txtSearch" class="input-sm" placeholder="Search By Name" />
+    <button id="btnSearch" type="button" class="btn-sm btn-default">Search</button>
+</div>
+
+<div id="main" class="row">
+    @Html.Action("_Persons")
+</div>
+
+<div class="spinner-border" role="status" style="display:none">
+    <span class="sr-only">Loading...</span>
+</div>
+
+<script type="text/javascript">
+    $("#txtSearch").autocomplete({
+        minLength: 1,
+        source: function (request, response) {
+            $.ajax({
+                type: "GET",
+                url: "/api/" + escape($("#txtSearch").val()),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            value: item,
+                            label: item
+                        };
+                    }));
+                }
+            })
+
+        }
+    });
+
+    $("#btnSearch").on("click", function () {
+        $("#btnSearch").text("Loading ...");
+        $("#main").load('@(Url.Action("Find","Home",null, Request.Url.Scheme))?name=' + escape($("#txtSearch").val()));
+        $("#btnSearch").text("Search");
+    })
+</script>
